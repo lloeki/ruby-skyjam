@@ -1,0 +1,8 @@
+# ruby-skyjam
+
+Make ruby interact with Google Music (a.k.a Skyjam)
+
+# References
+
+* https://github.com/simon-weber/Unofficial-Google-Music-API/
+* http://www.verious.com/code/antimatter15/google-music-protocol/
