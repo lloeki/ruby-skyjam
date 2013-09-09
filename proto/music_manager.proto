@@ -20,7 +20,7 @@ message ExportTracksResponse {
     enum Status {
         OK = 1;
         TRANSIENT_ERROR = 2;
-        CLIENT_MAXED = 3;
+        MAX_CLIENTS = 3;
         CLIENT_AUTH_ERROR = 4;
         CLIENT_REG_ERROR = 5;
     }

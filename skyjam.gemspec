@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{lib}/**/*'] + ['LICENSE', 'Rakefile', 'README.mdown']
 
-  #s.add_dependency 'protobuf'
-  s.add_dependency 'ruby_protobuf'
+  s.add_dependency 'protobuf'
   s.add_dependency 'oauth2'
   s.add_development_dependency 'pry'
+  s.add_development_dependency 'rubocop'
 end

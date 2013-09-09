@@ -4,6 +4,7 @@ require 'yaml'
 require 'json'
 require 'oauth2'
 require 'skyjam/version'
+require 'protobuf'
 require 'music_manager.pb'
 
 module SkyJam
