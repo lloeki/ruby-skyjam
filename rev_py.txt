@@ -1,0 +1,11 @@
+type/cpp_type:
+ 3 /  2 => int64
+ 5 /  1 => int32
+ 8 /  7 => bool
+ 9 /  9 => string
+14 /  8 => enum
+
+label:
+1 => optional
+2 => required
+3 => repeated

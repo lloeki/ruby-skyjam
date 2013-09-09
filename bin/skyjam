@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'pry'
+require 'skyjam'
+
+cli = SkyJam::Client.new
+cli.pry

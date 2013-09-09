@@ -1,0 +1,98 @@
+package MusicManager;
+
+// obtaining list of tracks to export
+
+message ExportTracksRequest {
+
+    enum TrackType {
+        ALL = 1;
+        STORE = 2;
+    }
+
+    required string client_id = 2;
+    optional string continuation_token = 3;
+    optional TrackType export_type = 4;
+    optional int64 updated_min = 5;
+
+}
+
+message ExportTracksResponse {
+    enum Status {
+        OK = 1;
+        TRANSIENT_ERROR = 2;
+        CLIENT_MAXED = 3;
+        CLIENT_AUTH_ERROR = 4;
+        CLIENT_REG_ERROR = 5;
+    }
+
+    message TrackInfo {
+        optional string id = 1;
+        optional string title = 2;
+        optional string album = 3;
+        optional string album_artist = 4;
+        optional string artist = 5;
+        optional int32 track_number = 6;
+        optional int64 track_size = 7;
+    }
+
+    required Status status = 1;
+    repeated TrackInfo track_info = 2;
+    optional string continuation_token = 3;
+    optional int64 updated_min = 4;
+}
+
+// requests
+
+message AuthRequest {
+    required string id = 1;
+    optional string name = 2;
+}
+
+// response container
+
+message Response {
+    enum Type {
+        METADATA = 1;
+        PLAYLIST = 2;
+        PLAYLIST_ENTRY = 3;
+        SAMPLE = 4;
+        JOBS = 5;
+        AUTH = 6;
+        CLIENT_STATE = 7;
+        UPDATE_UPLOAD_STATE = 8;
+        DELETE_UPLOAD_REQUESTED = 9;
+    }
+
+    message Status {
+        enum Code {
+            OK = 1;
+            ALREADY_EXISTS = 2;
+            SOFT_ERROR = 3;
+            METADATA_TOO_LARGE = 4;
+        }
+
+        required Code code = 1;
+    }
+
+    enum AuthStatus {
+        OK = 8;
+        MAX_LIMIT_REACHED = 9;
+        CLIENT_BOUND_TO_OTHER_ACCOUNT = 10;
+        CLIENT_NOT_AUTHORIZED = 11;
+        MAX_PER_MACHINE_USERS_EXCEEDED = 12;
+        CLIENT_PLEASE_RETRY = 13;
+        NOT_SUBSCRIBED = 14;
+        INVALID_REQUEST = 15;
+    }
+
+    optional Type type = 1;
+    //optional MetadataResponse metadata = 2;
+    //optional PlaylistResponse playlist = 3;
+    //optional PlaylistEntryResponse playlist_entry = 4;
+    //optional SampleResponse sample = 5;
+    //optional JobsResponse jobs = 7;
+    //optional ClientStateResponse client_state = 8;
+    //optional Policy policy = 6;
+    optional AuthStatus auth_status = 11;
+    optional bool auth_error = 12;
+}
