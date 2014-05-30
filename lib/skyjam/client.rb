@@ -1,6 +1,5 @@
 module SkyJam
   class Client
-
     def initialize
       @base_url = 'https://play.google.com/music/'
       @service_url = @base_url + 'services/'
@@ -25,7 +24,7 @@ module SkyJam
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       req = Net::HTTP::Post.new(uri.path)
       req.set_form_data(q)
       res = http.request(req)
@@ -43,7 +42,7 @@ module SkyJam
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       req = Net::HTTP::Head.new(uri.path)
       req['Authorization'] = 'GoogleLogin auth=%s' % @auth
       res = http.request(req)
@@ -61,7 +60,7 @@ module SkyJam
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       req = Net::HTTP::Post.new(uri.path)
       req.set_form_data('u' => 0, 'xt' => @cookie)
       req['Authorization'] = 'GoogleLogin auth=%s' % @auth
@@ -69,7 +68,6 @@ module SkyJam
       puts 'fail' unless res.is_a? Net::HTTPSuccess
       JSON.parse(res.body)
     end
-
 
     ## OAuth2
     # https://developers.google.com/accounts/docs/OAuth2InstalledApp
@@ -104,14 +102,15 @@ module SkyJam
       # ask for OOB auth code
       puts oauth2_client.auth_code.authorize_url(oauth2_request)
       # user gives code
-      puts "code: "
+      puts 'code: '
       code = gets.chomp.strip
       # exchange code for access token and refresh token
+      uri = oauth2_request[:redirect_uri]
       access = oauth2_client.auth_code.get_token(code,
-                                                 redirect_uri: oauth2_request[:redirect_uri],
+                                                 redirect_uri: uri,
                                                  token_method: :post)
-      puts "access: " + access.token
-      puts "refresh: " + access.refresh_token
+      puts 'access: '  + access.token
+      puts 'refresh: ' + access.refresh_token
       # expires_in
       # token_type: Bearer
       @oauth2_access_token = access
@@ -129,8 +128,9 @@ module SkyJam
     end
 
     def oauth2_login(refresh_token)
-      @oauth2_access_token = OAuth2::AccessToken.from_hash(oauth2_client,
-                                                           refresh_token: refresh_token)
+      @oauth2_access_token = OAuth2::AccessToken
+                              .from_hash(oauth2_client,
+                                         refresh_token: refresh_token)
       oauth2_refresh_access_token
     end
 
@@ -151,19 +151,19 @@ module SkyJam
     def mac_addr
       case RUBY_PLATFORM
       when /darwin/
-        if (m = %x[ifconfig en0].match(/ether (\S{17})/))
+        if (m = `ifconfig en0`.match(/ether (\S{17})/))
           m[1].upcase
         end
       end
     end
 
     def hostname
-      %x[hostname].chomp.gsub(/\.local$/, '')
+      `hostname`.chomp.gsub(/\.local$/, '')
     end
 
     def uploader_id
       # TODO: overflow
-      mac_addr.gsub(/\d{2}$/) { |s| "%02X" % (s.hex + 2) }
+      mac_addr.gsub(/\d{2}$/) { |s| '%02X' % (s.hex + 2) }
     end
 
     def uploader_name
@@ -172,7 +172,7 @@ module SkyJam
 
     def uploader_auth
       # {'User-agent': 'Music Manager (1, 0, 55, 7425 HTTPS - Windows)'}'
-      #uploader_id uploader_name
+      # uploader_id uploader_name
       pb_body = MusicManager::AuthRequest.new
       pb_body.id = uploader_id
       pb_body.name = uploader_name
@@ -181,7 +181,7 @@ module SkyJam
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       req = Net::HTTP::Post.new(uri.path)
       req.body = pb_body.serialize_to_string
       req['Content-Type'] = 'application/x-google-protobuf'
@@ -205,7 +205,7 @@ module SkyJam
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       req = Net::HTTP::Post.new(uri.path)
       req.body = pb_body.serialize_to_string
       req['Content-Type'] = 'application/x-google-protobuf'
@@ -227,5 +227,4 @@ module SkyJam
       @password = config['password']
     end
   end
-
 end

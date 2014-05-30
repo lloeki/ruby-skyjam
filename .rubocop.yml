@@ -1,3 +1,15 @@
 AllCops:
   Exclude:
     - '**/*.pb.rb'
+
+Documentation:
+  Enabled: false
+
+FormatString:
+  Enabled: false
+
+PerlBackrefs:
+  Enabled: false
+
+AndOr:
+  Enabled: false
