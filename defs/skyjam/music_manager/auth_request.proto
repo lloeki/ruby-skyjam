@@ -1,4 +1,4 @@
-package MusicManager;
+package SkyJam.MusicManager;
 
 message AuthRequest {
     required string id = 1;

@@ -1,4 +1,4 @@
-package MusicManager;
+package SkyJam.MusicManager;
 
 message ExportTracksRequest {
 

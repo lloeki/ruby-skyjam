@@ -3,6 +3,9 @@
 #
 require 'protobuf/message'
 
-module MusicManager
+module SkyJam
+  module MusicManager
+  end
+
 end
 
