@@ -73,32 +73,32 @@ module MusicManager
   # Message Fields
   #
   class ExportTracksRequest
-    required ::Protobuf::Field::StringField, :client_id, 2
-    optional ::Protobuf::Field::StringField, :continuation_token, 3
+    required :string, :client_id, 2
+    optional :string, :continuation_token, 3
     optional ::MusicManager::ExportTracksRequest::TrackType, :export_type, 4
-    optional ::Protobuf::Field::Int64Field, :updated_min, 5
+    optional :int64, :updated_min, 5
   end
 
   class ExportTracksResponse
     class TrackInfo
-      optional ::Protobuf::Field::StringField, :id, 1
-      optional ::Protobuf::Field::StringField, :title, 2
-      optional ::Protobuf::Field::StringField, :album, 3
-      optional ::Protobuf::Field::StringField, :album_artist, 4
-      optional ::Protobuf::Field::StringField, :artist, 5
-      optional ::Protobuf::Field::Int32Field, :track_number, 6
-      optional ::Protobuf::Field::Int64Field, :track_size, 7
+      optional :string, :id, 1
+      optional :string, :title, 2
+      optional :string, :album, 3
+      optional :string, :album_artist, 4
+      optional :string, :artist, 5
+      optional :int32, :track_number, 6
+      optional :int64, :track_size, 7
     end
 
     required ::MusicManager::ExportTracksResponse::Status, :status, 1
     repeated ::MusicManager::ExportTracksResponse::TrackInfo, :track_info, 2
-    optional ::Protobuf::Field::StringField, :continuation_token, 3
-    optional ::Protobuf::Field::Int64Field, :updated_min, 4
+    optional :string, :continuation_token, 3
+    optional :int64, :updated_min, 4
   end
 
   class AuthRequest
-    required ::Protobuf::Field::StringField, :id, 1
-    optional ::Protobuf::Field::StringField, :name, 2
+    required :string, :id, 1
+    optional :string, :name, 2
   end
 
   class Response
@@ -108,7 +108,7 @@ module MusicManager
 
     optional ::MusicManager::Response::Type, :type, 1
     optional ::MusicManager::Response::AuthStatus, :auth_status, 11
-    optional ::Protobuf::Field::BoolField, :auth_error, 12
+    optional :bool, :auth_error, 12
   end
 
 end
