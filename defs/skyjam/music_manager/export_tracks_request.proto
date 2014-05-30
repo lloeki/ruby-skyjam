@@ -1,0 +1,15 @@
+package MusicManager;
+
+message ExportTracksRequest {
+
+    enum TrackType {
+        ALL = 1;
+        STORE = 2;
+    }
+
+    required string client_id = 2;
+    optional string continuation_token = 3;
+    optional TrackType export_type = 4;
+    optional int64 updated_min = 5;
+
+}

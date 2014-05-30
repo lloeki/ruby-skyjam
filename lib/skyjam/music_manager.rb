@@ -1,0 +1,5 @@
+require 'skyjam/music_manager.pb.rb'
+require 'skyjam/music_manager/export_tracks_request.pb.rb'
+require 'skyjam/music_manager/export_tracks_response.pb.rb'
+require 'skyjam/music_manager/auth_request.pb.rb'
+require 'skyjam/music_manager/response.pb.rb'

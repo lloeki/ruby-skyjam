@@ -1,0 +1,6 @@
+package MusicManager;
+
+message AuthRequest {
+    required string id = 1;
+    optional string name = 2;
+}

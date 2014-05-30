@@ -1,55 +1,5 @@
 package MusicManager;
 
-// obtaining list of tracks to export
-
-message ExportTracksRequest {
-
-    enum TrackType {
-        ALL = 1;
-        STORE = 2;
-    }
-
-    required string client_id = 2;
-    optional string continuation_token = 3;
-    optional TrackType export_type = 4;
-    optional int64 updated_min = 5;
-
-}
-
-message ExportTracksResponse {
-    enum Status {
-        OK = 1;
-        TRANSIENT_ERROR = 2;
-        MAX_CLIENTS = 3;
-        CLIENT_AUTH_ERROR = 4;
-        CLIENT_REG_ERROR = 5;
-    }
-
-    message TrackInfo {
-        optional string id = 1;
-        optional string title = 2;
-        optional string album = 3;
-        optional string album_artist = 4;
-        optional string artist = 5;
-        optional int32 track_number = 6;
-        optional int64 track_size = 7;
-    }
-
-    required Status status = 1;
-    repeated TrackInfo track_info = 2;
-    optional string continuation_token = 3;
-    optional int64 updated_min = 4;
-}
-
-// requests
-
-message AuthRequest {
-    required string id = 1;
-    optional string name = 2;
-}
-
-// response container
-
 message Response {
     enum Type {
         METADATA = 1;

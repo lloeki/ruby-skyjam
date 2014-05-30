@@ -1,3 +1,6 @@
-task :proto do
-  system('protoc -I proto --ruby_out ./lib proto/music_manager.proto')
+load 'protobuf/tasks/compile.rake'
+
+task :compile do
+  args = %w(skyjam defs lib ruby .pb.rb)
+  ::Rake::Task['protobuf:compile'].invoke(*args)
 end

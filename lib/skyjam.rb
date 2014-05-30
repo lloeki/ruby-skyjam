@@ -5,7 +5,7 @@ require 'json'
 require 'oauth2'
 require 'skyjam/version'
 require 'protobuf'
-require 'music_manager.pb'
+require 'skyjam/music_manager'
 
 module SkyJam
 
@@ -231,7 +231,7 @@ module SkyJam
       req['X-Device-ID'] = uploader_id
       res = http.request(req)
       puts 'fail' unless res.is_a? Net::HTTPSuccess
-      
+
       MusicManager::ExportTracksResponse.new.parse_from_string(res.body)
     end
 

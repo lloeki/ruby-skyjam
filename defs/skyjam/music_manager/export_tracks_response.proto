@@ -1,0 +1,26 @@
+package MusicManager;
+
+message ExportTracksResponse {
+    enum Status {
+        OK = 1;
+        TRANSIENT_ERROR = 2;
+        MAX_CLIENTS = 3;
+        CLIENT_AUTH_ERROR = 4;
+        CLIENT_REG_ERROR = 5;
+    }
+
+    message TrackInfo {
+        optional string id = 1;
+        optional string title = 2;
+        optional string album = 3;
+        optional string album_artist = 4;
+        optional string artist = 5;
+        optional int32 track_number = 6;
+        optional int64 track_size = 7;
+    }
+
+    required Status status = 1;
+    repeated TrackInfo track_info = 2;
+    optional string continuation_token = 3;
+    optional int64 updated_min = 4;
+}
