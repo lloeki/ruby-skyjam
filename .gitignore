@@ -1,3 +1,5 @@
-auth.yml
-oauth2.token.yml
-Gemfile.lock
+/auth.yml
+/oauth2.token.yml
+/Gemfile.lock
+
+/tmp
