@@ -176,7 +176,7 @@ module SkyJam
     end
 
     def hostname
-      %x[hostname].chomp
+      %x[hostname].chomp.gsub(/\.local$/, '')
     end
 
     def uploader_id
