@@ -3,5 +3,5 @@
 require 'pry'
 require 'skyjam'
 
-cli = SkyJam::Client.new
-cli.pry
+lib = SkyJam::Library.connect('tmp/dl')
+lib.pry

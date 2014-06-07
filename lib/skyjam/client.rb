@@ -231,7 +231,7 @@ module SkyJam
       res = http.request(req)
       puts 'fail' unless res.is_a? Net::HTTPSuccess
 
-      JSON.parse(res.body)
+      JSON.parse(res.body)['url']
     end
 
     def download_track(url)

@@ -7,8 +7,9 @@ require 'protobuf'
 
 require 'skyjam/version'
 require 'skyjam/music_manager'
-require 'skyjam/track'
 require 'skyjam/client'
+require 'skyjam/track'
+require 'skyjam/library'
 
 module SkyJam
 end
