@@ -217,6 +217,39 @@ module SkyJam
       MusicManager::ExportTracksResponse.new.parse_from_string(res.body)
     end
 
+    def download_url(song_id)
+      uri = URI('https://music.google.com/music/export')
+      q = { version: 2, songid: song_id }
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      qs = q.map { |k, v| "#{k}=#{v}" }.join('&')
+      req = Net::HTTP::Get.new(uri.path + '?' + qs)
+      req['Authorization'] = oauth2_authentication_header
+      req['X-Device-ID'] = uploader_id
+      res = http.request(req)
+      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      JSON.parse(res.body)
+    end
+
+    def download_track(url)
+      uri = URI(url)
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
+      req['Authorization'] = oauth2_authentication_header
+      #req['User-Agent'] = 'Music Manager (1, 0, 55, 7425 HTTPS - Windows)'
+      req['X-Device-ID'] = uploader_id
+      res = http.request(req)
+      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      res.body
+    end
+
     def read_config
       YAML.load(File.read('auth.yml'))
     end
