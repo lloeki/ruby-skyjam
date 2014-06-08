@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module SkyJam
   class Track
     module Source
@@ -25,23 +27,40 @@ module SkyJam
     end
 
     def filename
-      File.join(library.path,
-                album_artist || artist,
-                album,
-                "#{number} - #{title}"
-      ).gsub(':', '_') << '.mp3'
+      escape_path_component("%02d - #{title}" % number) << extname
+    end
+
+    def extname
+      '.mp3'
+    end
+
+    def dirname
+      path_components = [library.path,
+                         escape_path_component(album_artist || artist),
+                         escape_path_component(album)]
+      File.join(path_components)
+    end
+
+    def path
+      File.join(dirname, filename)
     end
 
     def local?
-      File.exist?(filename)
+      File.exist?(path)
     end
 
-    def download(lazy: true)
-      if !lazy || (lazy && !local?)
+    def download(lazy: false)
+      return if !lazy || (lazy && local?)
+
+      file = Tempfile.new(filename)
+      begin
+        file << data(remote: true)
+      rescue SkyJam::Client::Error
+        file.close!
+        raise
+      else
         make_dir
-        File.open(filename, 'wb') do |f|
-          f << data(remote: true)
-        end
+        FileUtils.mv(file.path, path)
       end
     end
 
@@ -50,7 +69,7 @@ module SkyJam
         url = client.download_url(id)
         client.download_track(url)
       else
-        File.binread(filename)
+        File.binread(path)
       end
     end
 
@@ -66,12 +85,20 @@ module SkyJam
       library.send(:client)
     end
 
-    def dirname
-      File.dirname(filename)
-    end
-
     def make_dir
       FileUtils.mkdir_p(dirname)
+    end
+
+    def escape_path_component(component)
+      # OSX:   : -> FULLWIDTH COLON (U+FF1A)
+      # OSX:   / -> : (translated as / in Cocoa)
+      # LINUX: / -> DIVISION SLASH (U+2215)
+      component = component.dup
+
+      component.gsub!(':', "\uFF1A")
+      component.gsub!('/', ':')
+
+      component
     end
   end
 end
