@@ -103,7 +103,7 @@ module SkyJam
       puts oauth2_client.auth_code.authorize_url(oauth2_request)
       # user gives code
       puts 'code: '
-      code = gets.chomp.strip
+      code = $stdin.gets.chomp.strip
       # exchange code for access token and refresh token
       uri = oauth2_request[:redirect_uri]
       access = oauth2_client.auth_code.get_token(code,
