@@ -116,14 +116,14 @@ module SkyJam
       @oauth2_access_token = access
     end
 
-    def oauth2_persist
-      File.open('oauth2.token.yml', 'wb') do |f|
+    def oauth2_persist(filename)
+      File.open(filename, 'wb') do |f|
         f.write(YAML.dump(refresh_token: @oauth2_access_token.refresh_token))
       end
     end
 
-    def oauth2_restore
-      token_h = YAML.load(File.read('oauth2.token.yml'))
+    def oauth2_restore(filename)
+      token_h = YAML.load(File.read(filename))
       oauth2_login(token_h[:refresh_token])
     end
 
