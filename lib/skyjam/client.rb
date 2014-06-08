@@ -162,8 +162,7 @@ module SkyJam
     end
 
     def uploader_id
-      # TODO: overflow
-      mac_addr.gsub(/\d{2}$/) { |s| '%02X' % (s.hex + 2) }
+      mac_addr.gsub(/\d{2}$/) { |s| '%02X' % s.hex }
     end
 
     def uploader_name
