@@ -9,11 +9,15 @@ Gem::Specification.new do |s|
   s.email       = ['loic.nageleisen@gmail.com']
   s.homepage    = 'https://github.com/lloeki/ruby-skyjam'
   s.summary     = 'Google Music API client'
-  s.description = 'Skyjam (Google Music) client abstracting API details'
+  s.description = 'Deftly interact with Google Music (a.k.a Skyjam)'
 
-  s.files = Dir['{lib}/**/*'] + ['LICENSE', 'Rakefile', 'README.mdown']
+  s.files = Dir['{bin}/*'] +
+            Dir['{lib}/**/*'] +
+            ['LICENSE', 'Rakefile', 'README.md']
+  s.executables << 'skyjam'
 
   s.add_dependency 'oauth2', '~> 0.9'
+  s.add_dependency 'rainbow'
   s.add_development_dependency 'protobuf', '~> 3.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rubocop'
