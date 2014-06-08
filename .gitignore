@@ -1,4 +1,5 @@
 .DS_Store
+*.gem
 
 /auth.yml
 /oauth2.token.yml
