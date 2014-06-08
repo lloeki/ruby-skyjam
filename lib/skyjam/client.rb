@@ -6,8 +6,6 @@ module SkyJam
       @base_url = 'https://play.google.com/music/'
       @service_url = @base_url + 'services/'
       @android_url = 'https://android.clients.google.com/upsj/'
-
-      load_config
     end
 
     ### Simple auth
