@@ -1,7 +1,51 @@
 #!/usr/bin/env ruby
 
-require 'pry'
 require 'skyjam'
+require 'rainbow'
+require 'rainbow/ext/string'
 
-lib = SkyJam::Library.connect('tmp/dl')
-lib.pry
+if ARGV.size != 1
+  $stderr.puts('usage: skyjam [--auth | library_path]')
+  exit(1)
+end
+
+module SkyJam
+  path = ARGV.last
+
+  if ARGV[0] == '--auth'
+    path = nil if path == '--auth'
+    rc = Library.auth(path) ? 0 : 1
+    exit(rc)
+  end
+
+  begin
+    lib = Library.connect(path)
+  rescue Client::Error => e
+    $stderr.puts("error: #{e.message}")
+    exit(1)
+  end
+
+  begin
+    success = failed = 0
+
+    lib.tracks.each.with_index do |track, i|
+      begin
+        $stdout.write("    %05d #{track.title}" % i)
+        $stdout.flush
+        track.download(lazy: true)
+      rescue Client::Error
+        $stdout.write("\r" + 'NOK'.color(:red))
+        failed += 1
+      else
+        $stdout.write("\r" + ' OK'.color(:green))
+        success += 1
+      end
+      $stdout.write("\n")
+    end
+  ensure
+    $stdout.write("\n")
+    $stdout.write("summary: success %s | failed: %s\n" %
+                  [success.to_s.color(:green),
+                   failed.to_s.color(:red)])
+  end
+end
