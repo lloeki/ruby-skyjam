@@ -1,5 +1,7 @@
 module SkyJam
   class Client
+    class Error < StandardError; end
+
     def initialize
       @base_url = 'https://play.google.com/music/'
       @service_url = @base_url + 'services/'
@@ -28,7 +30,11 @@ module SkyJam
       req = Net::HTTP::Post.new(uri.path)
       req.set_form_data(q)
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'login failed: #{res.code}'
+      end
+
       tokens = Hash[*res.body
                         .split("\n")
                         .map { |r| r.split('=', 2) }
@@ -46,7 +52,11 @@ module SkyJam
       req = Net::HTTP::Head.new(uri.path)
       req['Authorization'] = 'GoogleLogin auth=%s' % @auth
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'cookie failed: #{res.code}'
+      end
+
       h = res.to_hash['set-cookie']
              .map { |e| e =~ /^xt=([^;]+);/ and $1 }
              .compact.first
@@ -65,7 +75,11 @@ module SkyJam
       req.set_form_data('u' => 0, 'xt' => @cookie)
       req['Authorization'] = 'GoogleLogin auth=%s' % @auth
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'loadalltracks failed: #{res.code}'
+      end
+
       JSON.parse(res.body)
     end
 
@@ -186,7 +200,10 @@ module SkyJam
       req['Content-Type'] = 'application/x-google-protobuf'
       req['Authorization'] = oauth2_authentication_header
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'uploader_auth failed: #{res.code}'
+      end
 
       MusicManager::Response.new.parse_from_string(res.body)
     end
@@ -212,7 +229,10 @@ module SkyJam
       req['Authorization'] = oauth2_authentication_header
       req['X-Device-ID'] = uploader_id
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'listtracks failed: #{res.code}'
+      end
 
       MusicManager::ExportTracksResponse.new.parse_from_string(res.body)
     end
@@ -229,7 +249,10 @@ module SkyJam
       req['Authorization'] = oauth2_authentication_header
       req['X-Device-ID'] = uploader_id
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'download_url failed: #{res.code}'
+      end
 
       JSON.parse(res.body)['url']
     end
@@ -245,7 +268,10 @@ module SkyJam
       #req['User-Agent'] = 'Music Manager (1, 0, 55, 7425 HTTPS - Windows)'
       req['X-Device-ID'] = uploader_id
       res = http.request(req)
-      puts 'fail' unless res.is_a? Net::HTTPSuccess
+
+      unless res.is_a? Net::HTTPSuccess
+        fail Error, 'download_track failed: #{res.code}'
+      end
 
       res.body
     end
