@@ -193,12 +193,13 @@ module SkyJam
 
     ## MusicManager API
 
-    def listtracks
+    def listtracks(continuation_token: nil)
       oauth2_refresh_access_token if oauth2_access_token_expired?
 
       pb_body = MusicManager::ExportTracksRequest.new
       pb_body.client_id = uploader_id
       pb_body.export_type = MusicManager::ExportTracksRequest::TrackType::ALL
+      pb_body.continuation_token = continuation_token unless continuation_token.nil?
 
       uri = URI('https://music.google.com/music/exportids')
 
