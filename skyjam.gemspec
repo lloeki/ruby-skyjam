@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'oauth2', '~> 0.9'
   s.add_dependency 'rainbow'
-  s.add_development_dependency 'protobuf', '~> 3.0'
+  s.add_dependency 'protobuf', '~> 3.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'rspec', '~> 2.14'
