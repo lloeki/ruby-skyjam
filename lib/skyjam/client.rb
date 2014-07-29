@@ -166,6 +166,10 @@ module SkyJam
         if (m = `ifconfig en0`.match(/ether (\S{17})/))
           m[1].upcase
         end
+      when /linux/
+        devices = Dir['/sys/class/net/*/address'].reject { |a| a =~ %r{/lo/} }
+        dev = devices.first
+        File.read(dev).chomp.upcase
       end
     end
 
