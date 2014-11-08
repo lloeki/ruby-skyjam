@@ -66,7 +66,7 @@ clarity aimed at in this project:
 ```ruby
 require 'skyjam'
 require 'pry'
-Skyjam::Library.connect('some/where').pry
+SkyJam::Library.connect('some/where').pry
 ```
 
 ## Future features
