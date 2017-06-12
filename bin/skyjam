@@ -30,7 +30,7 @@ module SkyJam
 
     lib.tracks.each.with_index do |track, i|
       begin
-        $stdout.write("    %05d #{track.title}" % i)
+        $stdout.write("    %05d #{track.title.gsub("%","%%")}" % i)
         $stdout.flush
         track.download(lazy: true)
       rescue Client::Error

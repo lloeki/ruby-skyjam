@@ -27,7 +27,7 @@ module SkyJam
     end
 
     def filename
-      escape_path_component("%02d - #{title}" % number) << extname
+      escape_path_component("%02d - #{title.gsub("%","%%")}" % number) << extname
     end
 
     def extname
